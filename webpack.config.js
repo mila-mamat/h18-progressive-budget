@@ -4,11 +4,11 @@ const path = require("path");
 const config = {
   entry: {
     app: "./public/assets/index.js",
-    offline: "./public/assets/indexedDB.js",
+    // offline: "./public/assets/indexedDB.js",
   },
   output: {
     path: __dirname + "/public/dist",
-    filename: "[name].bundle.js",
+    filename: "bundle.js",
   },
   // currently in production
   mode: "production",
