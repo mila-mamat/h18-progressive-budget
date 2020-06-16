@@ -34,9 +34,9 @@ This is a simple, web based Budget Tracker application to allow for offline acce
 The user will be able to add expenses and deposits to their budget with or without a connection. When entering transactions offline, they should populate the total when brought back online.
 Offline Functionality:
 
- - Enter deposits offline
+ - Enter deposits, expenses  offline
 
- - Enter expenses offline
+ - View the transactions list offline
 
 
 When brought back online:
@@ -60,7 +60,9 @@ SO THAT my account balance is accurate when I am traveling
  
 ## Demo
 
-<img src="https://github.com/mila-mamat/h17-Workout-Tracker/blob/master/gif/create-workout.gif"  width="700" height="400">
+The app allows you to add and view transaction online as well as offline.
+
+<img src="https://github.com/mila-mamat/h18-progressive-budget/blob/master/demo/Demo.gif"  width="900" height="500">
 
 
 
