@@ -41,8 +41,8 @@ const config = {
       short_name: "Budget",
       description:
         "An application that allows you to add expenses and deposits to your budget with or without a connection.",
-      background_color: "#01579b",
-      theme_color: "#ffffff",
+      background_color: "#ffffff",
+      theme_color: "#000000",
       start_url: "/",
       display: "standalone",
 
