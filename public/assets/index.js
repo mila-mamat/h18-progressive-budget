@@ -1,9 +1,8 @@
-import {
-  saveTransaction
-} from "./indexedDB.js";
+import { saveTransaction, getTransactions } from "./indexedDB.js";
 
 //create global variables
 let transactions = [];
+let pendingTransactions;
 let myChart;
 
 fetch("/api/transaction")
@@ -13,11 +12,19 @@ fetch("/api/transaction")
   .then((data) => {
     // Fetch and save the transactions from the database
     transactions = data;
-    populateTotal();
-    populateTable();
-    populateChart();
-  });
+  })
+  .then(() => {
+    //get the pending transactions from indexedDB if there are and add them to transactions to display
+    //covering situation that user refreshed page offline
+    pendingTransactions = getTransactions(transactions, populatePage);
+  })
+  .then(() => populatePage());
 
+function populatePage() {
+  populateTotal();
+  populateTable();
+  populateChart();
+}
 // populate the total based on the transactions
 function populateTotal() {
   // reduce transaction amounts to a single total value
@@ -52,35 +59,34 @@ function populateChart() {
   let reversed = transactions.slice().reverse();
   let sum = 0;
 
- 
   let labels = reversed.map((t) => {
     let date = new Date(t.date);
     return `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
   });
-
 
   let data = reversed.map((t) => {
     sum += parseInt(t.value);
     return sum;
   });
 
-  
   if (myChart) {
     myChart.destroy();
   }
- 
+
   let ctx = document.getElementById("myChart").getContext("2d");
 
   myChart = new Chart(ctx, {
     type: "line",
     data: {
       labels,
-      datasets: [{
-        label: "Total Over Time",
-        fill: true,
-        backgroundColor: "#6666ff",
-        data,
-      }, ],
+      datasets: [
+        {
+          label: "Total Over Time",
+          fill: true,
+          backgroundColor: "#6666ff",
+          data,
+        },
+      ],
     },
   });
 }
@@ -115,19 +121,17 @@ function sendTransaction(isAdding) {
   transactions.unshift(transaction);
 
   // re-populate the table, chart and total in the website
-  populateChart();
-  populateTable();
-  populateTotal();
+  populatePage();
 
-  // send the transaction to save into database using post api 
+  // send the transaction to save into database using post api
   fetch("/api/transaction", {
-      method: "POST",
-      body: JSON.stringify(transaction),
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-    })
+    method: "POST",
+    body: JSON.stringify(transaction),
+    headers: {
+      Accept: "application/json, text/plain, */*",
+      "Content-Type": "application/json",
+    },
+  })
     .then((response) => {
       console.log("online success response:", response);
       return response.json();
@@ -143,7 +147,6 @@ function sendTransaction(isAdding) {
     })
     //if app is offline and api post fails, save the transaction in indexedDB
     .catch((err) => {
-      
       console.log(err);
 
       // save into indexedDB

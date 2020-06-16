@@ -4,8 +4,9 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "heroku-postbuild": "webpack -p", 
-    "build": "webpack",
+    "heroku-postbuild": "webpack -p",
+    "prestart": "webpack",
+    "build": "webpack --watch",
     "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lite-server": "lite-server"

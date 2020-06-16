@@ -1,1 +1,113 @@
-!function(e){var t={};function n(o){if(t[o])return t[o].exports;var r=t[o]={i:o,l:!1,exports:{}};return e[o].call(r.exports,r,r.exports,n),r.l=!0,r.exports}n.m=e,n.c=t,n.d=function(e,t,o){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:o})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var o=Object.create(null);if(n.r(o),Object.defineProperty(o,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var r in e)n.d(o,r,function(t){return e[t]}.bind(null,r));return o},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=1)}([function(e,t,n){"use strict";var o;n.r(t),n.d(t,"saveTransaction",(function(){return a}));var r=indexedDB.open("budget",1);function a(e){o.transaction(["pending"],"readwrite").objectStore("pending").add(e)}r.onupgradeneeded=function(e){e.target.result.createObjectStore("pending",{autoIncrement:!0})},r.onsuccess=function(e){var t;o=e.target.result,navigator.onLine&&((t=o.transaction(["pending"],"readwrite").objectStore("pending").getAll()).onsuccess=function(){t.result.length>0&&fetch("/api/transaction/bulk",{method:"POST",body:JSON.stringify(t.result),headers:{Accept:"application/json, text/plain, */*","Content-Type":"application/json"}}).then((function(e){return e.json()})).then((function(){o.transaction(["pending"],"readwrite").objectStore("pending").clear()})).catch((function(e){return console.log(e)}))})},r.onerror=function(e){console.log("Woops! "+e.target.errorCode)}},function(e,t,n){"use strict";n.r(t);var o,r=n(0),a=[];function c(){var e=a.reduce((function(e,t){return e+parseInt(t.value)}),0);document.querySelector("#total").textContent=e}function u(){var e=document.querySelector("#tbody");e.innerHTML="",a.forEach((function(t){var n=document.createElement("tr");n.innerHTML="\n      <td>".concat(t.name,"</td>\n      <td>").concat(t.value,"</td>\n    "),e.appendChild(n)}))}function i(){var e=a.slice().reverse(),t=0,n=e.map((function(e){var t=new Date(e.date);return"".concat(t.getMonth()+1,"/").concat(t.getDate(),"/").concat(t.getFullYear())})),r=e.map((function(e){return t+=parseInt(e.value)}));o&&o.destroy();var c=document.getElementById("myChart").getContext("2d");o=new Chart(c,{type:"line",data:{labels:n,datasets:[{label:"Total Over Time",fill:!0,backgroundColor:"#6666ff",data:r}]}})}function l(e){var t=document.querySelector("#t-name"),n=document.querySelector("#t-amount"),o=document.querySelector(".form .error");if(""!==t.value&&""!==n.value){o.textContent="";var l={name:t.value,value:n.value,date:(new Date).toISOString()};e||(l.value*=-1),a.unshift(l),i(),u(),c(),fetch("/api/transaction",{method:"POST",body:JSON.stringify(l),headers:{Accept:"application/json, text/plain, */*","Content-Type":"application/json"}}).then((function(e){return console.log("online success response:",e),e.json()})).then((function(e){e.errors?o.textContent="Missing Information":(t.value="",n.value="")})).catch((function(e){console.log(e),Object(r.saveTransaction)(l),t.value="",n.value=""}))}else o.textContent="Missing Information"}fetch("/api/transaction").then((function(e){return e.json()})).then((function(e){a=e,c(),u(),i()})),document.querySelector("#add-btn").onclick=function(){l(!0)},document.querySelector("#sub-btn").onclick=function(){l(!1)}}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./public/assets/index.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./public/assets/index.js":
+/*!********************************!*\
+  !*** ./public/assets/index.js ***!
+  \********************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _indexedDB_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./indexedDB.js */ \"./public/assets/indexedDB.js\");\n //create global variables\n\nvar transactions = [];\nvar pendingTransactions;\nvar myChart;\nfetch(\"/api/transaction\").then(function (response) {\n  return response.json();\n}).then(function (data) {\n  // Fetch and save the transactions from the database\n  transactions = data;\n}).then(function () {\n  //get the pending transactions from indexedDB if there are and add them to transactions to display\n  //covering situation that user refreshed page offline\n  pendingTransactions = Object(_indexedDB_js__WEBPACK_IMPORTED_MODULE_0__[\"getTransactions\"])(transactions, populatePage);\n}).then(function () {\n  return populatePage();\n});\n\nfunction populatePage() {\n  populateTotal();\n  populateTable();\n  populateChart();\n} // populate the total based on the transactions\n\n\nfunction populateTotal() {\n  // reduce transaction amounts to a single total value\n  var total = transactions.reduce(function (total, t) {\n    return total + parseInt(t.value);\n  }, 0); // insert total value\n\n  var totalEl = document.querySelector(\"#total\");\n  totalEl.textContent = total;\n} // create a table based on transactions\n\n\nfunction populateTable() {\n  // Update the DOM\n  var tbody = document.querySelector(\"#tbody\");\n  tbody.innerHTML = \"\";\n  transactions.forEach(function (transaction) {\n    var tr = document.createElement(\"tr\");\n    tr.innerHTML = \"\\n      <td>\".concat(transaction.name, \"</td>\\n      <td>\").concat(transaction.value, \"</td>\\n    \");\n    tbody.appendChild(tr);\n  });\n} // create a line chart based on transactions\n\n\nfunction populateChart() {\n  // copy array and reverse it\n  var reversed = transactions.slice().reverse();\n  var sum = 0;\n  var labels = reversed.map(function (t) {\n    var date = new Date(t.date);\n    return \"\".concat(date.getMonth() + 1, \"/\").concat(date.getDate(), \"/\").concat(date.getFullYear());\n  });\n  var data = reversed.map(function (t) {\n    sum += parseInt(t.value);\n    return sum;\n  });\n\n  if (myChart) {\n    myChart.destroy();\n  }\n\n  var ctx = document.getElementById(\"myChart\").getContext(\"2d\");\n  myChart = new Chart(ctx, {\n    type: \"line\",\n    data: {\n      labels: labels,\n      datasets: [{\n        label: \"Total Over Time\",\n        fill: true,\n        backgroundColor: \"#6666ff\",\n        data: data\n      }]\n    }\n  });\n} //send transaction on click of add/ subtract buttons\n\n\nfunction sendTransaction(isAdding) {\n  var nameEl = document.querySelector(\"#t-name\");\n  var amountEl = document.querySelector(\"#t-amount\");\n  var errorEl = document.querySelector(\".form .error\"); // validate form\n\n  if (nameEl.value === \"\" || amountEl.value === \"\") {\n    errorEl.textContent = \"Missing Information\";\n    return;\n  } else {\n    errorEl.textContent = \"\";\n  } // create new transaction\n\n\n  var transaction = {\n    name: nameEl.value,\n    value: amountEl.value,\n    date: new Date().toISOString()\n  }; // if subtracting, convert amount to negative number\n\n  if (!isAdding) {\n    transaction.value *= -1;\n  } // add to beginning of current array of data\n\n\n  transactions.unshift(transaction); // re-populate the table, chart and total in the website\n\n  populatePage(); // send the transaction to save into database using post api\n\n  fetch(\"/api/transaction\", {\n    method: \"POST\",\n    body: JSON.stringify(transaction),\n    headers: {\n      Accept: \"application/json, text/plain, */*\",\n      \"Content-Type\": \"application/json\"\n    }\n  }).then(function (response) {\n    console.log(\"online success response:\", response);\n    return response.json();\n  }).then(function (data) {\n    if (data.errors) {\n      errorEl.textContent = \"Missing Information\";\n    } else {\n      // clear form\n      nameEl.value = \"\";\n      amountEl.value = \"\";\n    }\n  }) //if app is offline and api post fails, save the transaction in indexedDB\n  [\"catch\"](function (err) {\n    console.log(err); // save into indexedDB\n\n    Object(_indexedDB_js__WEBPACK_IMPORTED_MODULE_0__[\"saveTransaction\"])(transaction); // clear form\n\n    nameEl.value = \"\";\n    amountEl.value = \"\";\n  });\n}\n\ndocument.querySelector(\"#add-btn\").onclick = function () {\n  sendTransaction(true);\n};\n\ndocument.querySelector(\"#sub-btn\").onclick = function () {\n  sendTransaction(false);\n};\n\n//# sourceURL=webpack:///./public/assets/index.js?");
+
+/***/ }),
+
+/***/ "./public/assets/indexedDB.js":
+/*!************************************!*\
+  !*** ./public/assets/indexedDB.js ***!
+  \************************************/
+/*! exports provided: saveTransaction, getTransactions */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"saveTransaction\", function() { return saveTransaction; });\n/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, \"getTransactions\", function() { return getTransactions; });\nvar db; // create a new db request for the budget indexedDB\n\nvar request = indexedDB.open(\"budget\", 1);\n\nrequest.onupgradeneeded = function (event) {\n  // create object store called \"pending\" and set autoIncrement to true\n  var db = event.target.result; // Set auto increment to true for the pending store\n\n  db.createObjectStore(\"pending\", {\n    autoIncrement: true\n  });\n};\n\nrequest.onsuccess = function (event) {\n  db = event.target.result; // check if app is online before reading from db\n\n  if (navigator.onLine) {\n    checkDatabase();\n  }\n};\n\nrequest.onerror = function (event) {\n  console.log(\"Woops! \" + event.target.errorCode);\n};\n\nfunction checkDatabase() {\n  // open a transaction on your pending db\n  var transaction = db.transaction([\"pending\"], \"readwrite\"); // access your pending object store\n\n  var store = transaction.objectStore(\"pending\"); // get all records from store and set to a variable\n\n  var getAll = store.getAll(); // if there a values in the indexedDB post them to the actual database\n\n  getAll.onsuccess = function () {\n    if (getAll.result.length > 0) {\n      fetch(\"/api/transaction/bulk\", {\n        method: \"POST\",\n        body: JSON.stringify(getAll.result),\n        headers: {\n          Accept: \"application/json, text/plain, */*\",\n          \"Content-Type\": \"application/json\"\n        }\n      }).then(function (response) {\n        return response.json();\n      }).then(function () {\n        // if successful, open a transaction on your pending db\n        var transaction = db.transaction([\"pending\"], \"readwrite\"); // access your pending object store\n\n        var store = transaction.objectStore(\"pending\"); // clear all items in the store once they have been posted to the database\n\n        store.clear();\n      })[\"catch\"](function (err) {\n        return console.log(err);\n      });\n    }\n  };\n} // save newly added transaction to pending if app is offline\n\n\nfunction saveTransaction(newTransaction) {\n  // create a transaction on the pending db with readwrite access\n  var transaction = db.transaction([\"pending\"], \"readwrite\"); // access your pending object store\n\n  var store = transaction.objectStore(\"pending\"); // add record to your store with add method.\n\n  store.add(newTransaction);\n} //add the pending transactions to the transaction array to display if app is offline\n\nfunction getTransactions(transactions, callback) {\n  var storedTransaction; //check if the indexeddb database exists\n\n  if (db) {\n    // create a transaction on the pending db with read access\n    var transaction = db.transaction([\"pending\"], \"readonly\"); // access your pending object store\n\n    var store = transaction.objectStore(\"pending\"); // add record to your store with add method.\n\n    var getAll = store.getAll();\n\n    getAll.onsuccess = function () {\n      storedTransaction = getAll.result;\n\n      if (storedTransaction != []) {\n        storedTransaction.forEach(function (transaction) {\n          transactions.unshift(transaction);\n        });\n        callback();\n      }\n    };\n  }\n\n  return storedTransaction;\n}\n\n//# sourceURL=webpack:///./public/assets/indexedDB.js?");
+
+/***/ })
+
+/******/ });

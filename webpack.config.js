@@ -49,7 +49,7 @@ const config = {
       icons: [
         {
           src: path.resolve("./public/assets/icons/icon-192x192.png"),
-          sizes: [96, 128, 192, 256, 384, 512],
+          sizes: [48,72,96, 120,128, 144,152, 180, 192, 256, 384, 512],
           destination: path.join("assets", "icons"),
         },
       ],
