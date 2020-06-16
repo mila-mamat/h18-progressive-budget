@@ -42,7 +42,7 @@ const config = {
       description:
         "An application that allows you to add expenses and deposits to your budget with or without a connection.",
       background_color: "#ffffff",
-      theme_color: "#000000",
+      theme_color: "#ffffff",
       start_url: "/",
       display: "standalone",
 
